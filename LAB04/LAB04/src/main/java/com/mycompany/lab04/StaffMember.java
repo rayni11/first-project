@@ -12,9 +12,6 @@ public abstract class StaffMember {
     private String fullName;
     private final String staffId;
     protected String department;
-
-    // staffCount is static because it tracks a total shared across ALL staff objects,
-    // not something that belongs to one individual object.
     private static int staffCount = 0;
 
     public StaffMember(String fullName, String staffId, String department) {
@@ -50,8 +47,18 @@ public abstract class StaffMember {
         return staffCount;
     }
 
-    // StaffMember is abstract because "staff" on its own is just a general idea -
-    // every real object must be a concrete type like Lecturer or LabAssistant,
-    // each of which calculates payment differently.
+    // changeDepartment(...) is useful because it controls HOW the department can be
+    // changed (validating the input first), instead of letting outside code overwrite
+    // the field directly and possibly set it to something invalid like an empty string.
+    public void changeDepartment(String newDepartment) {
+        if (!newDepartment.isEmpty()) {
+            this.department = newDepartment;
+        }
+    }
+
+    public final void showCommonNotice() {
+        System.out.println("Notice: All staff must submit attendance records monthly.");
+    }
+
     public abstract double calculateMonthlyPayment();
 }
